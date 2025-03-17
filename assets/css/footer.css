@@ -1,0 +1,257 @@
+
+.footer{
+    background: var(--light-color);
+    display: flex;
+    flex-direction: column;
+}
+
+.support{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--dark-color);
+    border-radius: 5px;
+    padding: 1rem 5rem;
+}
+
+.support-content{
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.support-content > span:nth-child(1){
+    color: var(--light-color);
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+.support-content > span:nth-child(2),
+.support-content > span:nth-child(3){
+    color: var(--light-color);
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.support-content > span:nth-child(2) > i ,
+ .support-content > span:nth-child(3) i{
+    background: var(--light-color);
+    color: var(--dark-color);
+    padding: .5rem;
+    border-radius: 50%;
+ }
+
+
+.social-icons{
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.social-icons > a{
+    color: var(--light-color);
+    font-size: 1.1rem;
+}
+
+.footer-links{
+    padding: 1rem 5rem;
+    border-bottom: 1px solid var(--secondary-color);
+    display: flex;
+    gap: 2rem;
+}
+
+.column{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.column > span{
+    color: var(--info-color);
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.column > div > li > a{
+    color: var(--grey-color);
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.column > div > li > a:hover{
+    color: var(--primary-color);
+    transition: .3s ease;
+}
+
+.column > div{
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.subscribe{
+    padding: 1rem 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 5px;
+    border-bottom: 1px solid var(--secondary-color);
+}
+
+.subscribe > button{
+    background: var(--info-color);
+    color: var(--light-color);
+    padding: .5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'josefin sans', sans-serif;
+}
+
+.subscribe > button:hover{
+    background: var(--light-color);
+    color: var(--info-color);
+    transition: .3s ease;
+    border: 1px solid var(--info-color);
+}
+
+.subscribe > input{
+    padding: .5rem;
+    border: 1px solid var(--secondary-color);
+    border-radius: 5px;
+}
+
+.subscribe > input::placeholder{
+    color: var(--grey-color);
+    font-size: .8rem;
+    font-weight: 400;
+}
+
+.subscribe > input:focus{
+    outline: none;
+    border: 1px solid var(--info-color);
+}
+
+
+.copyright{
+    padding: 0 5rem;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+}
+
+
+/* Responsive Design */
+
+/* For Tablets (768px - 1024px) */
+@media screen and (max-width: 1024px) {
+    .footer {
+        padding: 1rem 3rem;
+    }
+
+    .support {
+        gap: 1rem;
+        padding: 1rem 3rem;
+    }
+    
+    .support-content {
+        align-items: start;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .support-content > span:nth-child(1){
+        font-size: 1.4rem;
+    }
+
+    .support-content > span:nth-child(2),
+    .support-content > span:nth-child(3){
+        font-size: .9rem;
+    }
+
+    .social-icons {
+        gap: 2rem;
+    }
+
+    .footer-links {
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 1rem 3rem;
+    }
+
+    .column {
+        width: 48%;
+    }
+
+    .subscribe {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem 3rem;
+    }
+
+    .subscribe input {
+        width: 100%;
+    }
+
+    .subscribe button {
+        width: 50%;
+    }
+
+    .copyright {
+        text-align: center;
+        padding: 1rem 3rem;
+    }
+}
+
+/* For Mobile Devices (up to 767px) */
+@media screen and (max-width: 767px) {
+    .footer {
+        padding: 1rem;
+    }
+
+    .support {
+        flex-direction: column;
+        gap: 2rem;
+        padding: 1rem;
+    }
+
+    .support-content {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .social-icons {
+        gap: 2rem;
+        font-size: 1.2rem;
+    }
+
+    .footer-links {
+        flex-direction: column;
+        align-items: center;
+        /* text-align: center; */
+        padding: 1rem;
+    }
+
+    .column {
+        width: 100%;
+    }
+
+    .subscribe {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+        text-align: center;
+    }
+
+    .subscribe input {
+        width: 100%;
+    }
+
+    .subscribe button {
+        width: 100%;
+    }
+
+    .copyright {
+        text-align: center;
+        padding: 1rem;
+    }
+}

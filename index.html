@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tax Era</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:wght@200;300;400;500;600;700&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- font awsome icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- css -->
+     <link rel="shortcut icon" href="assets/image/logo.png" type="image/x-icon">
+     <link rel="stylesheet" href="assets/css/main.css">
+     <link rel="stylesheet" href="assets/css/header.css">
+     <link rel="stylesheet" href="assets/css/footer.css">
+     <link rel="stylesheet" href="assets/css/hero.css">
+    <link rel="stylesheet" href="assets/css/goals.css">
+    <link rel="stylesheet" href="assets/css/service.css">
+    <link rel="stylesheet" href="assets/css/booking.css">
+    <link rel="stylesheet" href="assets/css/whyus.css">
+    <link rel="stylesheet" href="assets/css/testimonial.css">
+</head>
+<body>
+    <header>
+        <a href="#" class="logo">
+            <img src="assets/image/logo.png" alt="Logo">
+            <span class="company-name"><big>T</big>AXERA</span>
+        </a>
+        <nav>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Projects</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="menu-toggle" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+
+    <main class="main">
+        <section class="hero" id="hero">
+                <span class="hero-title">Welcom To <span>TaxEra</span></span>
+                <span class="hero-text">Your Trusted Tax & Compliance Partner!</span>
+                <span class="hero-subtitle"><strong>Save Time, Save Tax</strong> - Hassle-free online tax and compliance services for individuals and businesses.</span>
+                <a href="#" class="btn">
+                    <button class="ctn-btn">Book Consultation</button>
+                </a>
+        </section>
+
+        <section class="goals">
+            <span><strong><big>Our Goal :</big></strong> Helping businesses stay compliant with tax laws while saving time and money!</span>
+            <span>Need Expert Assistance? WhatsApp Us Now <a href="https://wa.me/9342127722" target="_blank">+91 93421 27722</a></span>
+            
+            <div class="goals-grid">
+                <div class="goal-card">
+                    <img src="assets/image/user-group.png" alt="user">
+                    <span>4.8</span>
+                    <span>Google Ratings</span>
+                </div>
+                <div class="goal-card">
+                    <img src="assets/image/shield.png" alt="shield">
+                    <span>100+</span>
+                    <span>Satisfied Customers</span>
+                </div>
+                <div class="goal-card">
+                    <img src="assets/image/account.png" alt="account">
+                    <span>1+ Lakh</span>
+                    <span>Saved Already!</span>
+                </div>
+                <div class="goal-card">
+                    <img src="assets/image/laptop.png" alt="experience">
+                    <span>7+ Years</span>
+                    <span>Industry Experience</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="services">
+            <div class="service-title">
+                <span class="service-text"><span>Plan Your Taxes Today</span> with Our Tax Consultants</span>
+                <span class="service-subtitle">What Services Can You Get?</span>
+            </div>
+        
+            <!-- Tabs for Service Categories -->
+            <div class="service-tabs">
+                <button class="tab-btn active" onclick="showCategory('taxation')">Taxation & Compliance</button>
+                <button class="tab-btn" onclick="showCategory('accounting')">Accounting & Financial</button>
+                <button class="tab-btn" onclick="showCategory('business')">Business Compliance</button>
+            </div>
+        
+            <!-- Service Container (Cards) -->
+            <div id="service-container" class="service-grid"></div>
+        
+            <!-- Pagination Controls -->
+            <div class="pagination">
+                <button id="prev-btn" onclick="prevPage()">Prev</button>
+                <span id="page-number">1</span>
+                <button id="next-btn" onclick="nextPage()">Next</button>
+            </div>
+        </section>
+        
+        <section class="booking">
+            <span class="booking-title">How to get <span class="highlight">Tax Consultancy</span> Services?</span>
+            <div class="booking-icons">
+                <div class="step step-call">
+                    <i class="fa-solid fa-user-plus"></i>
+                    <p>Book a<br> Call with Expert</p>
+                </div>
+                <div class="step step-query">
+                    <i class="fas fa-file-alt"></i>
+                    <p>Explain Your Query</p>
+                </div>
+                <div class="step step-pricing">
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                    <p>Understand Pricing</p>
+                </div>
+                <div class="step step-payment">
+                    <i class="fas fa-credit-card"></i>
+                    <p>Pay the Fees</p>
+                </div>
+                <div class="step step-consultation">
+                    <i class="fas fa-comments"></i>
+                    <p>Get Personalized <br>Consultation</p>
+                </div>
+            </div>
+            <a href="#" class="advice-btn">
+                <button class="booking-btn">Get Tax Advice! <i class="fas fa-arrow-up-right-from-square"></i></button>
+            </a>
+        </section>
+
+        <section class="why-us">
+            <div class="container">
+                <h2>WHY CHOOSE TAXERA?</h2>
+                <ul class="features">
+                    <li>100% Online Process – No paperwork, no office visits</li>
+                    <li>Affordable & Transparent Pricing – No hidden charges</li>
+                    <li>Timely Compliance Management – Never miss a deadline</li>
+                    <li>Expert Consultation – Professional tax advisors at your service</li>
+                    <li>Dedicated Support – Assistance via WhatsApp, Email & Call</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="testimonials">
+            <span>Customers <span>Testimonials</span></span>
+            <div class="testimonial-container">
+                <div class="testimonial" id="testimonial">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"This is an amazing service! Highly recommended."</p>
+                        <div class="author">
+                            <img src="assets/image/client1.jpg" alt="User 1">
+                            <h4>John Doe</h4>
+                            <span>Software Engineer</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"I had a great experience. Will use it again!"</p>
+                        <div class="author">
+                            <img src="assets/image/client1.jpg" alt="User 2">
+                            <h4>Jane Smith</h4>
+                            <span>Graphic Designer</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"Excellent quality and support. Very happy!"</p>
+                        <div class="author">
+                            <img src="assets/image/client1.jpg" alt="User 3">
+                            <h4>Mark Wilson</h4>
+                            <span>Entrepreneur</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testi-buttons">
+                    <button onclick="prevTestimonial()">&#10094;</button>
+                    <button onclick="nextTestimonial()">&#10095;</button>
+                </div>
+            </div>
+        </section>
+        
+        
+        
+    </main>
+
+    <footer class="footer">
+        <div class="support">
+            <div class="support-content">
+                <span>Need support ?</span>
+                <span><i class="fas fa-phone-alt"></i> +91 93421 27722</span>
+                <span><i class="fas fa-envelope"></i> cs.taxera@gmail.com</span>
+            </div>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+        <div class="footer-links">
+            <div class="column">
+                <span>Quick Links</span>
+                <div>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Tax Glossary</a></li>
+                </div>
+            </div>
+            <div class="column">
+                <span>Products</span>
+                <div>
+                    <li><a href="#">File Income Tax Return</a></li>
+                    <li><a href="#">Upload Form 16</a></li>
+                    <li><a href="#">CA Assisted ITR Filing</a></li>
+                </div>
+            </div>
+            <div class="column">
+                <span>Services</span>
+                <div>
+                    <li><a href="#">Income Tax Filing</a></li>
+                    <li><a href="#">TDS Returns</a></li>
+                    <li><a href="#">Tax Planning</a></li>
+                </div>
+            </div>
+        </div>
+        
+        <div class="subscribe">
+            <input type="email" placeholder="Enter Your Email Address">
+            <button>Subscribe</button>
+        </div>
+        <p class="copyright">© 2025 TAXERA. All Rights Reserved.</p>
+    </footer>
+
+    <!-- script -->
+     <script src="assets/js/header.js"></script>
+     <script src="assets/js/service.js"></script>
+    <script src="assets/js/testimonial.js"></script>
+</body>
+</html>

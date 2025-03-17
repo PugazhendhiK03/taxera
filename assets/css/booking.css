@@ -1,0 +1,167 @@
+
+.booking {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 3rem;
+    padding: 0 2rem;
+    padding-bottom: 2rem;
+}
+
+.booking-title {
+    font-size: 1.7rem;
+    font-weight: bold;
+    padding-bottom: 2rem;
+}
+
+.booking-title > span {
+    color: var(--primary-color);
+}
+
+.booking-icons {
+    display: flex;
+    flex-wrap: nowrap;
+    padding-inline: 2rem;  /* Increased from 1rem */
+    gap: 1rem;
+    padding-top: 2rem;
+}
+
+
+
+/* Enable horizontal scrolling only on small screens */
+@media (max-width: 768px) {
+    .booking-icons {
+        overflow-x: auto;
+        white-space: nowrap;
+        scrollbar-width: thin; /* Firefox */
+        scrollbar-color: var(--grey-color) var(--secondary-color);
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding-inline: 1rem; /* Fix: Add padding so first & last elements are fully visible */
+    }
+
+    .step {
+        scroll-snap-align: center;
+        min-width: 130px; /* Fix: Ensuring visibility */
+        text-align: center;
+    }
+
+    /* Custom scrollbar for Webkit browsers */
+    .booking-icons::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .booking-icons::-webkit-scrollbar-track {
+        background: var(--secondary-color);
+        border-radius: 10px;
+    }
+
+    .booking-icons::-webkit-scrollbar-thumb {
+        background: var(--grey-color);
+        border-radius: 10px;
+    }
+}
+
+/* Disable scrolling and center items on larger screens */
+@media (min-width: 768px) {
+    .booking-icons {
+        overflow-x: hidden;
+        justify-content: center;
+    }
+}
+
+/* Steps */
+.step {
+    text-align: center;
+    min-width: 100px; /* Fix: Making sure text is always visible */
+    padding: 10px;
+    flex: 0 0 auto;
+}
+
+.step > i {
+    font-size: 32px;
+    color: var(--info-color);
+}
+
+.step > p {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--grey-color);
+    white-space: normal; /* Fix: Prevent text from getting cut off */
+}
+
+/* Button */
+.booking-btn {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 2.5rem;
+    font-family: 'josefin sans', sans-serif;
+}
+
+.booking-btn:hover {
+    background: var(--background-color);
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    transition: .4s ease;
+}
+
+/* Media Query for small screens */
+@media (max-width: 768px) {
+    .booking {
+        padding: 1rem;
+    }
+
+    .booking-title {
+        font-size: 1.8rem;
+    }
+
+    .booking-icons {
+        gap: 0.5rem;
+    }
+
+    .step {
+        min-width: 130px; /* Fix: Ensure full visibility */
+        font-size: 13px;
+    }
+
+    .step > i {
+        font-size: 28px;
+    }
+
+    .step > p {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .booking-title {
+        font-size: 1.5rem;
+    }
+
+    .step {
+        min-width: 130px; /* Fix: Prevent text cut-off */
+        font-size: 12px;
+    }
+
+    .step > i {
+        font-size: 24px;
+    }
+
+    .step > p {
+        font-size: 11px;
+    }
+
+    .booking-btn {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+}
