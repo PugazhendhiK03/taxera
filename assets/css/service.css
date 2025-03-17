@@ -22,7 +22,7 @@
 }
 
 .tab-btn {
-    padding: 10px 20px;
+    padding: .5rem 1rem;
     border: 1px solid var(--info-color);
     background: var(--light-color);
     cursor: pointer;
@@ -92,14 +92,14 @@
 }
 
 .pagination button {
-    padding: 8px 15px;
+    padding: 10px 14px;
     border: none;
     background: var(--info-color);
     color: var(--background-color);
     border-radius: 5px;
     cursor: pointer;
     margin: 5px;
-    font-size: 12px;
+    font-size: 14px;
     font-family: 'Josefin Sans', sans-serif;
     transition: 0.3s;
 }
@@ -144,10 +144,6 @@
     .service-subtitle {
         font-size: 1.1rem;
     }
-    .tab-btn {
-        font-size: 14px;
-        padding: 8px 16px;
-    }
     .service-grid {
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
@@ -163,16 +159,8 @@
     .service-subtitle {
         font-size: 1rem;
     }
-    .tab-btn {
-        font-size: 14px;
-        padding: 6px 12px;
-    }
     .service-grid {
         grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    }
-    .pagination button {
-        font-size: 10px;
-        padding: 6px 12px;
     }
 }
 
@@ -192,15 +180,14 @@
     .service-subtitle {
         font-size: 0.9rem;
     }
-    .tab-btn {
-        font-size: 12px;
-        padding: 5px 10px;
-    }
     .service-grid {
         grid-template-columns: repeat(1,1fr);
     }
-    .pagination button {
-        font-size: 10px;
-        padding: 5px 10px;
+}
+
+@media only screen and (max-width: 375px){
+    .service-tabs{
+        align-items: center;
+        justify-content: center;
     }
 }
