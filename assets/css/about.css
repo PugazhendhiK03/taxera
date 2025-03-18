@@ -24,10 +24,11 @@
     clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
 }
 
+
 .about-hero-img img {
-    max-width: 100%;
+    max-width: 70%;
     height: auto;
-    border-radius: 15px;
+    border-radius: 10px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     animation: fadeInLeft 1s ease;
 }
@@ -75,9 +76,9 @@
 }
 
 .mission-image img {
-    max-width: 100%;
+    max-width: 70%;
     height: auto;
-    border-radius: 15px;
+    border-radius: 10px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     animation: fadeInRight 1s ease;
 }
@@ -320,11 +321,22 @@
     }
 }
 
+@media only screen and (max-width: 1090px){
+    .about-hero{
+        justify-content: center;
+        text-align: center;
+    }
+}
+
+
 /* Responsive Design */
 @media (max-width: 768px) {
-    .about-hero, .about-mission, .founder-profile {
-        flex-direction: column;
+    .about-hero, .about-mission {
+        flex-direction: column-reverse;
         text-align: center;
+    }
+    .founder-profile{
+        flex-direction: column;
     }
 
     .about-hero-content, .mission-content, .founder-details {
@@ -337,5 +349,24 @@
 
     .about-hero p, .mission-content p, .about-vision p, .founder-details p {
         font-size: 1rem;
+    }
+}
+
+/* @media only screen and (max-width: 482px){
+    .about-hero-img > img{
+        max-width: 300px;
+    }
+}
+
+@media only screen and (max-width: 375px){
+    .about-hero-img > img{
+        max-width: 200px;
+    }
+} */
+
+@media only screen and (max-width: 1257px){
+    .about-mission {
+        justify-content: center;
+        text-align: center;
     }
 }

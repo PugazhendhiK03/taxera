@@ -1,18 +1,16 @@
-
 .testimonials {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    /* margin-bottom: 4rem; */
     gap: 1rem;
     text-align: center;
-    background: var(--background-color);
+    background: var(--light-color);
     padding: 4rem 2rem;
 }
 
 .testimonials > span:nth-child(1) {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: bold;
     color: var(--primary-color);
     font-family: 'Montserrat', sans-serif;
@@ -32,15 +30,14 @@
 
 .testimonial {
     display: flex;
-    transition: transform 0.8s ease-in-out; /* Smooth sliding transition */
+    transition: transform 0.5s ease-in-out; /* Smoother and faster transition */
     touch-action: pan-x; /* Enables horizontal touch gestures */
-    /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); */
 }
 
 .testimonial-card {
     min-width: 100%;
     padding: 20px;
-    background: var(--light-color);
+    background: var(--background-color);
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }

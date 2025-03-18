@@ -2,40 +2,45 @@ const services = {
     taxation: [
         { img: "assets/image/gst.png", title: "GST Registration & Filing", desc: "Get your GST number and file returns hassle-free!" },
         { img: "assets/image/incometax.jpg", title: "Income Tax Filing", desc: "File your income tax returns accurately and on time!" },
-        { img: "assets/image/tds.png", title: "TDS Compliance & Filing", desc: "Ensure TDS compliance with expert assistance!" },
-        { img: "assets/image/PT.png", title: "Professional Tax Filing", desc: "Seamless PT registration and filing services!" },
-        { img: "assets/image/TaxAdvisory.png", title: "International Taxation & Advisory", desc: "Get expert advice on international taxation policies!" },
+        { img: "assets/image/tds.jpeg", title: "TDS Compliance & Filing", desc: "Ensure TDS compliance with expert assistance!" },
+        { img: "assets/image/pt.jpg", title: "Professional Tax Filing", desc: "Seamless PT registration and filing services!" },
+        { img: "assets/image/ita.jpg", title: "International Taxation & Advisory", desc: "Get expert advice on international taxation policies!" },
     ],
     accounting: [
-        { img: "assets/image/Bookkeeping.png", title: "Bookkeeping & Accounting", desc: "Accurate bookkeeping & financial records!" },
-        { img: "assets/image/Payroll.png", title: "Payroll Management", desc: "Manage salaries, EPF, and ESI hassle-free!" },
+        { img: "assets/image/bk.jpg", title: "Bookkeeping & Accounting", desc: "Accurate bookkeeping & financial records!" },
+        { img: "assets/image/pr.jpg", title: "Payroll Management", desc: "Manage salaries, EPF, and ESI hassle-free!" },
         { img: "assets/image/fsp.png", title: "Financial Statements Preparation", desc: "Get professional financial statement preparation!" },
-        { img: "assets/image/Budgeting.png", title: "Financial Planning & Budgeting", desc: "Optimize your finances with expert planning!" },
+        { img: "assets/image/fpb.jpeg", title: "Financial Planning & Budgeting", desc: "Optimize your finances with expert planning!" },
     ],
     business: [
-        { img: "assets/image/MSME.png", title: "MSME (Udyam) Registration", desc: "Register your business easily as an MSME!" },
-        { img: "assets/image/CompanyCompliance.png", title: "Company Compliance Filings", desc: "Stay compliant with ROC & annual returns!" },
-        { img: "assets/image/Licensing.png", title: "Business Licensing & Certification Assistance", desc: "Get licenses & certifications (FSSAI, IEC, etc.)" },
-        { img: "assets/image/Audit.png", title: "Audit & Compliance Support", desc: "Professional audit assistance & compliance!" },
+        { img: "assets/image/msme.jpg", title: "MSME (Udyam) Registration", desc: "Register your business easily as an MSME!" },
+        { img: "assets/image/cpf.jpeg", title: "Company Compliance Filings", desc: "Stay compliant with ROC & annual returns!" },
+        { img: "assets/image/blc.png", title: "Business Licensing & Certification Assistance", desc: "Get licenses & certifications (FSSAI, IEC, etc.)" },
+        { img: "assets/image/acs.jpg", title: "Audit & Compliance Support", desc: "Professional audit assistance & compliance!" },
     ],
 };
 
 let currentCategory = "taxation";
-let currentIndex = 0;
+let index = 0;
+let startX = 0;
+let isSwiping = false;
+
+const serviceTrack = document.querySelector(".service-track");
+const paginationDots = document.getElementById("pagination-dots");
 
 function showCategory(category) {
     currentCategory = category;
-    currentIndex = 0;
+    index = 0;
     document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
     document.querySelector(`[onclick="showCategory('${category}')"]`).classList.add("active");
     updateServices();
 }
 
 function updateServices() {
-    const serviceContainer = document.getElementById("service-container");
-    serviceContainer.innerHTML = "";
-
     const servicesToShow = services[currentCategory];
+    serviceTrack.innerHTML = "";
+
+    // Create service cards
     servicesToShow.forEach(service => {
         const card = document.createElement("div");
         card.classList.add("service-card");
@@ -44,38 +49,100 @@ function updateServices() {
             <span>${service.title}</span>
             <span>${service.desc}</span>
         `;
-        serviceContainer.appendChild(card);
+        serviceTrack.appendChild(card);
     });
 
-    createDots(servicesToShow.length);
-    updateSlide();
-}
-
-function createDots(count) {
-    const dotsContainer = document.getElementById("dots-container");
-    dotsContainer.innerHTML = "";
-    for (let i = 0; i < count; i++) {
+    // Update pagination dots
+    paginationDots.innerHTML = "";
+    servicesToShow.forEach((_, i) => {
         const dot = document.createElement("span");
         dot.classList.add("dot");
-        dot.setAttribute("onclick", `changeSlide(${i})`);
-        dotsContainer.appendChild(dot);
-    }
+        if (i === index) dot.classList.add("active");
+        dot.addEventListener("click", () => goToSlide(i));
+        paginationDots.appendChild(dot);
+    });
+
+    showSlide();
 }
 
-function changeSlide(index) {
-    currentIndex = index;
-    updateSlide();
+function showSlide() {
+    const width = document.querySelector(".service-card").offsetWidth;
+    serviceTrack.style.transform = `translateX(-${index * width}px)`;
 }
 
-function updateSlide() {
-    const cards = document.querySelectorAll(".service-card");
+function goToSlide(slideIndex) {
+    index = slideIndex;
+    showSlide();
+    updateDots();
+}
+
+function updateDots() {
     const dots = document.querySelectorAll(".dot");
-    cards.forEach((card, i) => {
-        card.style.transform = `translateX(${-currentIndex * 100}%)`;
-    });
     dots.forEach((dot, i) => {
-        dot.classList.toggle("active", i === currentIndex);
+        dot.classList.toggle("active", i === index);
     });
+}
+
+// Touch event listeners for mobile
+serviceTrack.addEventListener("touchstart", (e) => {
+    startX = e.touches[0].clientX;
+    isSwiping = true;
+});
+
+serviceTrack.addEventListener("touchmove", (e) => {
+    if (!isSwiping) return;
+    let moveX = e.touches[0].clientX - startX;
+    if (moveX > 50) {
+        prevSlide();
+        isSwiping = false;
+    } else if (moveX < -50) {
+        nextSlide();
+        isSwiping = false;
+    }
+});
+
+serviceTrack.addEventListener("touchend", () => {
+    isSwiping = false;
+});
+
+// Mouse event listeners for desktop/laptop
+serviceTrack.addEventListener("mousedown", (e) => {
+    startX = e.clientX;
+    isSwiping = true;
+});
+
+serviceTrack.addEventListener("mousemove", (e) => {
+    if (!isSwiping) return;
+    let moveX = e.clientX - startX;
+    if (moveX > 50) {
+        prevSlide();
+        isSwiping = false;
+    } else if (moveX < -50) {
+        nextSlide();
+        isSwiping = false;
+    }
+});
+
+serviceTrack.addEventListener("mouseup", () => {
+    isSwiping = false;
+});
+
+serviceTrack.addEventListener("mouseleave", () => {
+    isSwiping = false;
+});
+
+function nextSlide() {
+    const servicesToShow = services[currentCategory];
+    index = (index + 1) % servicesToShow.length;
+    showSlide();
+    updateDots();
+}
+
+function prevSlide() {
+    const servicesToShow = services[currentCategory];
+    index = (index - 1 + servicesToShow.length) % servicesToShow.length;
+    showSlide();
+    updateDots();
 }
 
 // Initialize the first category

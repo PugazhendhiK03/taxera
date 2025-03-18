@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projects - Tax Era</title>
+    <title>Contact Us - Tax Era</title>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <!-- google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:wght@200;300;400;500;600;700&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-    <!-- font awsome icon -->
+    <!-- font awesome icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- css -->
-     <link rel="shortcut icon" href="assets/image/logo.png" type="image/x-icon">
-     <link rel="stylesheet" href="assets/css/main.css">
-     <link rel="stylesheet" href="assets/css/header.css">
-     <link rel="stylesheet" href="assets/css/footer.css">
-     <link rel="stylesheet" href="assets/css/projects.css">
+    <link rel="shortcut icon" href="assets/image/logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/footer.css">
+    <link rel="stylesheet" href="assets/css/contact.css">
 </head>
 <body>
     <header>
@@ -41,56 +41,56 @@
                 </div>
             </div>
         </nav>
-        
     </header>
 
-    <main class="projects">
-    <section class="projects-hero">
-        <h1>Our Projects</h1>
-        <p>Explore our successful projects and see how we help businesses and individuals save time and taxes.</p>
-    </section>
+    <main class="contact">
+        <section class="contact-hero">
+            <h1>Contact Us</h1>
+            <p>We're here to help! Reach out to us for any queries or assistance.</p>
+        </section>
 
-    <section class="projects-grid">
-        <div class="project-card">
-            <img src="assets/image/project1.jpeg" alt="Project 1">
-            <div class="project-info">
-                <h3>Tax Optimization for SMEs</h3>
-                <p>Helped small and medium enterprises save up to 30% on taxes through strategic planning.</p>
-                <a href="#" class="btn">View Details</a>
+        <section class="contact-form">
+            <div class="form-container">
+                <form id="contactForm" action="Form Spree Link Here" method="POST">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" placeholder="Enter your message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Send Message</button>
+                </form>
             </div>
-        </div>
-        <div class="project-card">
-            <img src="assets/image/project2.jpg" alt="Project 2">
-            <div class="project-info">
-                <h3>ITR Filing for Freelancers</h3>
-                <p>Streamlined income tax filing for over 500 freelancers, ensuring compliance and accuracy.</p>
-                <a href="#" class="btn">View Details</a>
-            </div>
-        </div>
-        <div class="project-card">
-            <img src="assets/image/project3.jpg" alt="Project 3">
-            <div class="project-info">
-                <h3>TDS Compliance for Corporates</h3>
-                <p>Assisted large corporations in filing TDS returns on time, avoiding penalties.</p>
-                <a href="#" class="btn">View Details</a>
-            </div>
-        </div>
-        <div class="project-card">
-            <img src="assets/image/project4.jpeg" alt="Project 4">
-            <div class="project-info">
-                <h3>Tax Planning for Startups</h3>
-                <p>Provided tailored tax planning solutions for startups to maximize savings.</p>
-                <a href="#" class="btn">View Details</a>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="cta-section">
-        <h2>Have a Project in Mind?</h2>
-        <p>Let us help you achieve your financial goals. Contact us today!</p>
-        <a href="#" class="btn">Get Started</a>
-    </section>
-</main>
+        <section class="contact-info">
+            <div class="info-card">
+                <i class="fas fa-map-marker-alt"></i>
+                <h3>Our Office</h3>
+                <p>123 Tax Street, Financial City, FC 12345</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-phone-alt"></i>
+                <h3>Call Us</h3>
+                <p>+91 93421 27722</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-envelope"></i>
+                <h3>Email Us</h3>
+                <p>cs.taxera@gmail.com</p>
+            </div>
+        </section>
+    </main>
 
     <footer class="footer">
         <div class="support">
@@ -144,6 +144,7 @@
     </footer>
 
     <!-- script -->
-     <script src="assets/js/header.js"></script>
-     <script src="assets/js/project.js"></script>
+    <script src="assets/js/header.js"></script>
+    <script src="assets/js/contact.js"></script>
+</body>
 </html>
