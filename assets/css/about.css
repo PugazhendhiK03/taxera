@@ -188,7 +188,7 @@
 }
 
 .founder-image img {
-    max-width: 100%;
+    max-width: 70%;
     height: auto;
     border-radius: 15px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -368,5 +368,13 @@
     .about-mission {
         justify-content: center;
         text-align: center;
+    }
+}
+
+@media only screen and (max-width: 1090px){
+    .founder-profile {
+        text-align: center;
+        align-items: center;
+        justify-content: center;
     }
 }
