@@ -1,4 +1,8 @@
 /* Projects Page Styles */
+main{
+    padding: 5px;
+}
+
 .projects-hero {
     background: linear-gradient(135deg, rgba(0, 123, 255, 0.9), rgba(104, 178, 255, 0.9));
     background-size: cover;

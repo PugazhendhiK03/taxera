@@ -10,6 +10,10 @@
     --transition: all 0.3s ease;
 }
 
+main{
+    padding: 5px;
+}
+
 /* Services Hero Section */
 .services-hero {
     background: var(--background-gradient), url('assets/image/services-bg.jpg');

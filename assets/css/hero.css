@@ -1,5 +1,4 @@
-
-.hero{
+.hero {
     display: flex;
     width: 100%;
     height: 70vh;
@@ -36,47 +35,80 @@
     z-index: -1;
 }
 
-.hero-title{
-    font-size: 3rem;
+.hero-title {
+    font-size: 3.5rem;
     font-weight: 700;
     color: var(--background-color);
+    animation: fadeInDown 1s ease;
 }
 
-.hero-title > span{
+.hero-title > span {
     color: var(--primary-color);
 }
 
-.hero-text{
+.hero-text {
     font-size: 1.5rem;
     font-weight: 500;
-    /* color: var(--background-color); */
     color: var(--light-color);
+    animation: fadeInUp 1s ease;
 }
 
-.hero-subtitle{
+.hero-subtitle {
     font-size: 1rem;
     font-weight: 400;
     color: var(--background-color);
     font-family: 'Montserrat', sans-serif;
+    animation: fadeInUp 1s ease;
 }
 
-.ctn-btn{
+.ctn-btn {
     border: none;
     background: var(--primary-color);
     color: var(--background-color);
-    padding: .7rem 1rem;
-    border-radius: 5px;
+    padding: 0.7rem 1rem;
+    border-radius: 25px;
     font-size: 1.2rem;
     font-weight: 600;
     cursor: pointer;
-    /* font-family: 'Josefin Sans', sans-serif; */
-    font-family: 'Montserrat', sans-serif;
+    transition: var(--transition);
+    animation: fadeIn 1s ease;
 }
 
-.ctn-btn:hover{
+.ctn-btn:hover {
     background: var(--background-color);
     color: var(--primary-color);
-    transition: .4s ease;
+    transform: translateY(-5px);
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 @media (max-width: 768px) {
@@ -95,17 +127,17 @@
     }
 }
 
-@media only screen and (max-width:425px){
-    .hero-title{
+@media only screen and (max-width: 425px) {
+    .hero-title {
         font-size: 2rem;
     }
-    .hero-text{
+    .hero-text {
         font-size: 1rem;
     }
-    .hero-subtitle{
+    .hero-subtitle {
         font-size: 0.8rem;
     }
-    .ctn-btn{
+    .ctn-btn {
         font-size: 1rem;
     }
-}   
+}
