@@ -27,29 +27,35 @@
     <header>
         <a href="#" class="logo">
             <img src="assets/image/logo.png" alt="Logo">
-            <span class="company-name"><big>T</big>AXERA</span>
+            <span class="company-name">
+                <big>T</big>AXERA <br><span>Save Time Save Tax</span>
+            </span>
         </a>
         <nav>
             <ul class="nav-links" id="nav-links">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Projects</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="projects.html">Projects</a></li>
                 <li><a href="#">Contact</a></li>
             </ul>
+            <div class="nav-right">
+                <a href="#">Book Now</a>
+                <div class="menu-toggle" onclick="toggleMenu()">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
         </nav>
-        <div class="menu-toggle" onclick="toggleMenu()">
-            <i class="fas fa-bars"></i>
-        </div>
+        
     </header>
 
     <main class="main">
         <section class="hero" id="hero">
-                <span class="hero-title">Welcom To <span>TaxEra</span></span>
-                <span class="hero-text">Your Trusted Tax & Compliance Partner!</span>
-                <span class="hero-subtitle"><strong>Save Time, Save Tax</strong> - Hassle-free online tax and compliance services for individuals and businesses.</span>
+                <span class="hero-title">Welcome To <span>TaxEra</span></span>
+                <span class="hero-text">Save Time, Save Tax</span>
+                <span class="hero-subtitle"><strong></strong>Hassle-free online tax and compliance services for individuals and businesses.</span>
                 <a href="#" class="btn">
-                    <button class="ctn-btn">Book Consultation</button>
+                    <button class="ctn-btn">Book Free <wbr>Consultation</button>
                 </a>
         </section>
 
@@ -97,16 +103,10 @@
             <!-- Service Container (Cards) -->
             <div id="service-container" class="service-grid"></div>
         
-            <!-- Pagination Controls -->
-            <div class="pagination">
-                <button id="prev-btn" onclick="prevPage()">Prev</button>
-                <span id="page-number">1</span>
-                <button id="next-btn" onclick="nextPage()">Next</button>
-            </div>
         </section>
         
         <section class="booking">
-            <span class="booking-title">How to get <span class="highlight">Tax Consultancy</span> Services?</span>
+            <span class="booking-title">How To Get <span class="highlight">Our Services?</span></span>
             <div class="booking-icons">
                 <div class="step step-call">
                     <i class="fa-solid fa-user-plus"></i>
@@ -126,7 +126,7 @@
                 </div>
                 <div class="step step-consultation">
                     <i class="fas fa-comments"></i>
-                    <p>Get Personalized <br>Consultation</p>
+                    <p>Get Personalized <br>Services</p>
                 </div>
             </div>
             <a href="#" class="advice-btn">
@@ -162,7 +162,7 @@
                     <div class="testimonial-card">
                         <p class="testimonial-text">"I had a great experience. Will use it again!"</p>
                         <div class="author">
-                            <img src="assets/image/client1.jpg" alt="User 2">
+                            <img src="assets/image/client2.jpg" alt="User 2">
                             <h4>Jane Smith</h4>
                             <span>Graphic Designer</span>
                         </div>
@@ -170,18 +170,15 @@
                     <div class="testimonial-card">
                         <p class="testimonial-text">"Excellent quality and support. Very happy!"</p>
                         <div class="author">
-                            <img src="assets/image/client1.jpg" alt="User 3">
+                            <img src="assets/image/client3.jpg" alt="User 3">
                             <h4>Mark Wilson</h4>
                             <span>Entrepreneur</span>
                         </div>
                     </div>
                 </div>
-                <div class="testi-buttons">
-                    <button onclick="prevTestimonial()">&#10094;</button>
-                    <button onclick="nextTestimonial()">&#10095;</button>
-                </div>
             </div>
         </section>
+        
         
         
         
@@ -242,5 +239,6 @@
      <script src="assets/js/header.js"></script>
      <script src="assets/js/service.js"></script>
     <script src="assets/js/testimonial.js"></script>
+    <script src="assets/js/main.js"></script>
 </body>
 </html>

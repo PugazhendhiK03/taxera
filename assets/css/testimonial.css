@@ -1,35 +1,24 @@
-:root {
-    --background-color: #fafdff;
-    --text-color: #1a1a1a;
-    --primary-color: #007bff;
-    --secondary-color: #dedede;
-    --success-color: #28a745;
-    --danger-color: #dc3545;
-    --warning-color: #ffc107;
-    --info-color: #17a2b8;
-    --light-color: rgb(246, 251, 255);
-    --dark-color: #343a40;
-    --grey-color: #6c757d;
-}
 
-.testimonials{
+.testimonials {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    margin-bottom: 4rem;
+    /* margin-bottom: 4rem; */
     gap: 1rem;
     text-align: center;
+    background: var(--background-color);
+    padding: 4rem 2rem;
 }
 
-.testimonials > span:nth-child(1){
+.testimonials > span:nth-child(1) {
     font-size: 1.4rem;
     font-weight: bold;
     color: var(--primary-color);
     font-family: 'Montserrat', sans-serif;
 }
 
-.testimonials > span:nth-child(1) > span{
+.testimonials > span:nth-child(1) > span {
     color: var(--dark-color);
 }
 
@@ -43,7 +32,9 @@
 
 .testimonial {
     display: flex;
-    transition: transform 0.5s ease-in-out;
+    transition: transform 0.8s ease-in-out; /* Smooth sliding transition */
+    touch-action: pan-x; /* Enables horizontal touch gestures */
+    /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); */
 }
 
 .testimonial-card {
@@ -51,6 +42,7 @@
     padding: 20px;
     background: var(--light-color);
     border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .testimonial-text {
@@ -79,26 +71,4 @@
 
 .author span {
     color: var(--grey-color);
-}
-
-.testi-buttons {
-    display: flex;
-    justify-content: space-between;
-    position: absolute;
-    top: 50%;
-    width: 100%;
-    transform: translateY(-50%);
-}
-
-.testi-buttons button {
-    background: var(--info-color);
-    color: var(--light-color);
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.testi-buttons button:hover {
-    background: var(--dark-color);
 }

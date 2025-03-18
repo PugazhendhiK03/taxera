@@ -5,11 +5,11 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    margin-top: 5rem;
+    /* margin-top: 5rem; */
     background-color: var(--background-color);
     color: var(--dark-color);
     width: 100%;
-    padding: 0 2rem;
+    padding: 4rem 2rem;
 }
 
 .goals > span > :nth-child(1){

@@ -1,5 +1,4 @@
 
-
 /* Services Section */
 .services {
     padding: 40px 20px;
@@ -145,7 +144,7 @@
         font-size: 1.1rem;
     }
     .service-grid {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(3, 2fr);
     }
 }
 
@@ -160,7 +159,7 @@
         font-size: 1rem;
     }
     .service-grid {
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        grid-template-columns: repeat(3, 2fr);
     }
 }
 
@@ -182,6 +181,7 @@
     }
     .service-grid {
         grid-template-columns: repeat(1,1fr);
+        margin: 0 2rem;
     }
 }
 

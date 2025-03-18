@@ -10,8 +10,6 @@ const services = {
         { img: "assets/image/Bookkeeping.png", title: "Bookkeeping & Accounting", desc: "Accurate bookkeeping & financial records!" },
         { img: "assets/image/Payroll.png", title: "Payroll Management", desc: "Manage salaries, EPF, and ESI hassle-free!" },
         { img: "assets/image/fsp.png", title: "Financial Statements Preparation", desc: "Get professional financial statement preparation!" },
-        { img: "assets/image/", title: "Accounts Payable & Receivable Management", desc: "" },
-        { img: "assets/image/TaxPlanning.png", title: "Tax Planning & Advisory", desc: "Expert tax planning strategies for your business!" },
         { img: "assets/image/Budgeting.png", title: "Financial Planning & Budgeting", desc: "Optimize your finances with expert planning!" },
     ],
     business: [
@@ -19,30 +17,25 @@ const services = {
         { img: "assets/image/CompanyCompliance.png", title: "Company Compliance Filings", desc: "Stay compliant with ROC & annual returns!" },
         { img: "assets/image/Licensing.png", title: "Business Licensing & Certification Assistance", desc: "Get licenses & certifications (FSSAI, IEC, etc.)" },
         { img: "assets/image/Audit.png", title: "Audit & Compliance Support", desc: "Professional audit assistance & compliance!" },
-        { img: "assets/image/Automation.png", title: "Process Automation & Financial Optimization", desc: "Optimize business processes with automation!" },
     ],
 };
 
 let currentCategory = "taxation";
-let currentPage = 1;
-const itemsPerPage = 3;
+let currentIndex = 0;
 
-// Function to Show Services by Category
 function showCategory(category) {
     currentCategory = category;
-    currentPage = 1;
+    currentIndex = 0;
     document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
     document.querySelector(`[onclick="showCategory('${category}')"]`).classList.add("active");
     updateServices();
 }
 
-// Function to Update Services & Handle Pagination
 function updateServices() {
     const serviceContainer = document.getElementById("service-container");
     serviceContainer.innerHTML = "";
 
-    const servicesToShow = services[currentCategory].slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-    
+    const servicesToShow = services[currentCategory];
     servicesToShow.forEach(service => {
         const card = document.createElement("div");
         card.classList.add("service-card");
@@ -54,30 +47,38 @@ function updateServices() {
         serviceContainer.appendChild(card);
     });
 
-    updatePagination();
+    createDots(servicesToShow.length);
+    updateSlide();
 }
 
-// Function to Handle Pagination
-function updatePagination() {
-    const totalPages = Math.ceil(services[currentCategory].length / itemsPerPage);
-    document.getElementById("page-number").innerText = `${currentPage} / ${totalPages}`;
-    document.getElementById("prev-btn").disabled = currentPage === 1;
-    document.getElementById("next-btn").disabled = currentPage === totalPages;
-}
-
-function nextPage() {
-    if (currentPage < Math.ceil(services[currentCategory].length / itemsPerPage)) {
-        currentPage++;
-        updateServices();
+function createDots(count) {
+    const dotsContainer = document.getElementById("dots-container");
+    dotsContainer.innerHTML = "";
+    for (let i = 0; i < count; i++) {
+        const dot = document.createElement("span");
+        dot.classList.add("dot");
+        dot.setAttribute("onclick", `changeSlide(${i})`);
+        dotsContainer.appendChild(dot);
     }
 }
 
-function prevPage() {
-    if (currentPage > 1) {
-        currentPage--;
-        updateServices();
-    }
+function changeSlide(index) {
+    currentIndex = index;
+    updateSlide();
 }
 
-// Initialize First Category
-showCategory("taxation");
+function updateSlide() {
+    const cards = document.querySelectorAll(".service-card");
+    const dots = document.querySelectorAll(".dot");
+    cards.forEach((card, i) => {
+        card.style.transform = `translateX(${-currentIndex * 100}%)`;
+    });
+    dots.forEach((dot, i) => {
+        dot.classList.toggle("active", i === currentIndex);
+    });
+}
+
+// Initialize the first category
+document.addEventListener("DOMContentLoaded", () => {
+    updateServices();
+});
