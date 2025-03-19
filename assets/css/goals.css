@@ -28,6 +28,10 @@
     margin-top: 1.5rem;
 }
 
+.goals > span:nth-child(2) > a{
+    color: var(--dark-color);
+}
+
 .goals-grid {
     display: flex;
     flex-wrap: wrap;
