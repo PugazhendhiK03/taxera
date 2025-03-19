@@ -8,6 +8,10 @@
     --background-gradient: linear-gradient(135deg, rgba(0, 123, 255, 0.9), rgba(104, 178, 255, 0.9));
 }
 
+main{
+    margin: 5px;
+}
+
 /* Contact Hero Section */
 .contact-hero {
     background: var(--background-gradient), url('assets/image/contact-bg.jpg');
