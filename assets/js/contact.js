@@ -4,6 +4,9 @@ document.getElementById('contactForm').addEventListener('submit', function (e) {
     // Get the form data
     const formData = new FormData(this);
 
+    // Add a subject to the form data
+    formData.append('_subject', 'New Contact Request');
+
     // Send the form data to Formspree
     fetch(this.action, {
         method: 'POST',
