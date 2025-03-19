@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - Tax Era</title>
+    <title>Book Now - Tax Era</title>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <!-- google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:wght@200;300;400;500;600;700&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-    <!-- font awesome icon -->
+    <!-- font awsome icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- css -->
-    <link rel="shortcut icon" href="assets/image/logo.png" type="image/x-icon">
-    <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="assets/css/header.css">
-    <link rel="stylesheet" href="assets/css/footer.css">
-    <link rel="stylesheet" href="assets/css/contact.css">
+     <link rel="shortcut icon" href="assets/image/logo.png" type="image/x-icon">
+     <link rel="stylesheet" href="assets/css/main.css">
+     <link rel="stylesheet" href="assets/css/header.css">
+     <link rel="stylesheet" href="assets/css/footer.css">
+     <link rel="stylesheet" href="assets/css/bookinPage.css">
 </head>
 <body>
     <header>
@@ -41,55 +41,37 @@
                 </div>
             </div>
         </nav>
+        
     </header>
 
-    <main class="contact">
-        <section class="contact-hero">
-            <h1>Contact Us</h1>
-            <p>We're here to help! Reach out to us for any queries or assistance.</p>
-        </section>
-
-        <section class="contact-form">
-            <div class="form-container">
-                <form id="contactForm" action="Form Spree Link Here" method="POST">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name" placeholder="Enter your name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Phone</label>
-                        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message" name="message" placeholder="Enter your message" rows="5" required></textarea>
-                    </div>
-                    <button type="submit" class="btn">Send Message</button>
-                </form>
-            </div>
-        </section>
-
-        <section class="contact-info">
-            <div class="info-card">
-                <i class="fas fa-map-marker-alt"></i>
-                <h3>Our Office</h3>
-                <p>123 Tax Street, Financial City, FC 12345</p>
-            </div>
-            <div class="info-card">
-                <i class="fas fa-phone-alt"></i>
-                <h3>Call Us</h3>
-                <p>+91 93421 27722</p>
-            </div>
-            <div class="info-card">
-                <i class="fas fa-envelope"></i>
-                <h3>Email Us</h3>
-                <p>cs.taxera@gmail.com</p>
-            </div>
-        </section>
+    <main class="booking-page">
+        <div class="booking-container">
+            <h1>Book a Free Consultation</h1>
+            <form id="booking-form" action="https://formspree.io/f/mrgnygog" method="POST">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="query">Your Query</label>
+                    <textarea id="query" name="query" rows="5" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="date">Preferred Date</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                <input type="hidden" id="appointment-number" name="appointment-number">
+                <button type="submit">Book Now</button>
+            </form>
+        </div>
     </main>
 
     <footer class="footer">
@@ -144,7 +126,8 @@
     </footer>
 
     <!-- script -->
-    <script src="assets/js/header.js"></script>
-    <script src="assets/js/contact.js"></script>
+     <script src="assets/js/header.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/bookingPage.js"></script>
 </body>
 </html>

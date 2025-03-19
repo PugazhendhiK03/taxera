@@ -131,6 +131,12 @@ serviceTrack.addEventListener("mouseleave", () => {
     isSwiping = false;
 });
 
+// Keyboard navigation
+document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowRight") nextSlide();
+    if (e.key === "ArrowLeft") prevSlide();
+});
+
 function nextSlide() {
     const servicesToShow = services[currentCategory];
     index = (index + 1) % servicesToShow.length;
