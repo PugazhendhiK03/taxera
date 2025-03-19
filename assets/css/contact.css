@@ -136,6 +136,27 @@ main{
 }
 
 
+/* Google Map Section */
+.google-map {
+    padding: 80px 20px;
+    background: var(--light-color);
+    text-align: center;
+}
+
+.google-map h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: var(--dark-color);
+    animation: fadeInDown 1s ease;
+}
+
+.google-map iframe {
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeInUp 1s ease;
+}
+
+
 /* Animations */
 @keyframes fadeInDown {
     from {
