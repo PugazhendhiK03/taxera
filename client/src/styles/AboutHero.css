@@ -1,0 +1,34 @@
+/* About Hero Section */
+.about-hero {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 80px 20px;
+    background: var(--background-gradient);
+    color: var(--light-color);
+    clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+}
+
+.about-hero-img img {
+    max-width: 70%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    animation: fadeInLeft 1s ease;
+}
+
+.about-hero-content {
+    max-width: 600px;
+    animation: fadeInRight 1s ease;
+}
+
+.about-hero-content h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+}
+
+.about-hero-content p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+}

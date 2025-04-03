@@ -1,0 +1,109 @@
+/* About Page Styles */
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    --grey-color: #6c757d;
+    --background-gradient: linear-gradient(135deg, rgba(0, 123, 255, 0.9), rgba(104, 178, 255, 0.9));
+}
+
+.about{
+    margin: 5px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .about-hero, .about-mission {
+        flex-direction: column-reverse;
+        text-align: center;
+    }
+    .founder-profile{
+        flex-direction: column;
+    }
+
+    .about-hero-content, .mission-content, .founder-details {
+        margin-top: 20px;
+    }
+
+    .about-hero h1, .mission-content h2, .about-vision h2, .about-services h2, .about-founder h2, .about-achievements h2 {
+        font-size: 2rem;
+    }
+
+    .about-hero p, .mission-content p, .about-vision p, .founder-details p {
+        font-size: 1rem;
+    }
+}
+
+@media only screen and (max-width: 1257px){
+    .about-mission {
+        justify-content: center;
+        text-align: center;
+    }
+}
+
+@media only screen and (max-width: 1090px){
+    .about-hero{
+        justify-content: center;
+        text-align: center;
+    }
+    .founder-profile {
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+    }
+}

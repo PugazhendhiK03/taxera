@@ -1,0 +1,32 @@
+.projects-hero {
+    background: linear-gradient(135deg, rgba(0, 123, 255, 0.9), rgba(104, 178, 255, 0.9));
+    background-size: cover;
+    background-position: center;
+    color: var(--light-color);
+    text-align: center;
+    padding: 120px 20px;
+    clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+}
+
+.projects-hero__title {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    animation: projects-fadeInDown 1s ease;
+}
+
+.projects-hero__description {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    animation: projects-fadeInUp 1s ease;
+}
+
+@media (max-width: 768px) {
+    .projects-hero__title {
+        font-size: 2.5rem;
+    }
+
+    .projects-hero__description {
+        font-size: 1rem;
+    }
+}

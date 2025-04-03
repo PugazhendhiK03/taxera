@@ -1,0 +1,56 @@
+/* Founder Section */
+.about-founder {
+    padding: 80px 20px;
+    background: var(--background-gradient);
+    color: var(--light-color);
+}
+
+.about-founder h2 {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 40px;
+    animation: fadeInDown 1s ease;
+}
+
+.founder-profile {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.founder-image img {
+    max-width: 70%;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    animation: fadeInLeft 1s ease;
+}
+
+.founder-details {
+    max-width: 600px;
+    animation: fadeInRight 1s ease;
+}
+
+.founder-details h3 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.founder-details p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.founder-details ul {
+    list-style: none;
+    padding: 0;
+}
+
+.founder-details ul li {
+    font-size: 1rem;
+    margin-bottom: 10px;
+}

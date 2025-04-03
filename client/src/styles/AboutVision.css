@@ -1,0 +1,22 @@
+/* Vision Section */
+.about-vision {
+    padding: 80px 20px;
+    background: var(--background-gradient);
+    color: var(--light-color);
+    text-align: center;
+    clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%);
+}
+
+.about-vision h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    animation: fadeInDown 1s ease;
+}
+
+.about-vision p {
+    font-size: 1.1rem;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+    animation: fadeInUp 1s ease;
+}

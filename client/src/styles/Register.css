@@ -1,0 +1,157 @@
+/* Register Page Styles with Gradient Background */
+.register-page-wrapper {
+    background: linear-gradient(135deg, rgba(0, 123, 255, 0.9), rgba(104, 178, 255, 0.9));
+    min-height: 100vh;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .register-main-container {
+    max-width: 500px;
+    width: 100%;
+    padding: 2.5rem;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    animation: fadeInUp 0.6s ease;
+  }
+  
+  .register-title {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    font-size: 2.2rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+  }
+  
+  .register-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(to right, #2ecc71, #27ae60);
+    border-radius: 2px;
+  }
+  
+  .register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .register-input .MuiOutlinedInput-root {
+    border-radius: 10px;
+    background-color: rgba(245, 245, 245, 0.7);
+  }
+  
+  .register-input .MuiOutlinedInput-notchedOutline {
+    border-color: rgba(0, 123, 255, 0.3) !important;
+  }
+  
+  .register-input .MuiInputLabel-outlined {
+    color: #7f8c8d;
+  }
+  
+  .register-input .MuiOutlinedInput-input {
+    padding: 14px;
+  }
+  
+  .register-button {
+    background: linear-gradient(135deg, #2ecc71, #27ae60) !important;
+    color: white !important;
+    padding: 14px 28px !important;
+    font-weight: 500 !important;
+    border-radius: 10px !important;
+    text-transform: none !important;
+    font-size: 1.1rem !important;
+    margin-top: 1rem !important;
+    box-shadow: none !important;
+    transition: all 0.3s ease !important;
+    letter-spacing: 0.5px;
+  }
+  
+  .register-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(46, 204, 113, 0.3) !important;
+  }
+  
+  .register-error {
+    color: #e74c3c;
+    text-align: center;
+    margin-bottom: 1rem;
+    font-weight: 500;
+    background: rgba(231, 76, 60, 0.1);
+    padding: 0.75rem;
+    border-radius: 8px;
+  }
+  
+  .register-footer {
+    text-align: center;
+    margin-top: 2rem;
+    color: #7f8c8d;
+    font-size: 0.95rem;
+  }
+  
+  .register-footer a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+  
+  .register-footer a:hover {
+    color: #2980b9;
+    text-decoration: underline;
+  }
+  
+  /* Shared Animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .register-page-wrapper {
+      padding: 1.5rem;
+    }
+    
+    .register-main-container {
+      padding: 2rem;
+    }
+    
+    .register-title {
+      font-size: 2rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .register-page-wrapper {
+      padding: 1rem;
+    }
+    
+    .register-main-container {
+      padding: 1.5rem;
+    }
+    
+    .register-title {
+      font-size: 1.8rem;
+    }
+    
+    .register-button {
+      padding: 12px 24px !important;
+    }
+  }

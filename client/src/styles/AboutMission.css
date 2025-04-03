@@ -1,0 +1,34 @@
+/* Mission Section */
+.about-mission {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 80px 20px;
+    background: var(--light-color);
+}
+
+.mission-content {
+    max-width: 600px;
+    animation: fadeInLeft 1s ease;
+}
+
+.mission-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: var(--dark-color);
+}
+
+.mission-content p {
+    font-size: 1.1rem;
+    color: var(--grey-color);
+    line-height: 1.6;
+}
+
+.mission-image img {
+    max-width: 70%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    animation: fadeInRight 1s ease;
+}

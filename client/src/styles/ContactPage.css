@@ -1,0 +1,213 @@
+/* Contact Page Variables */
+:root {
+    --contact-primary-color: #007bff;
+    --contact-secondary-color: #6c757d;
+    --contact-light-color: #f8f9fa;
+    --contact-dark-color: #343a40;
+    --contact-grey-color: #6c757d;
+    --contact-background-gradient: linear-gradient(135deg, rgba(0, 123, 255, 0.9), rgba(104, 178, 255, 0.9));
+  }
+  
+  /* Contact Container */
+  .contact-container {
+    margin: 5px;
+  }
+  
+  /* Contact Hero Section */
+  .contact-hero-section {
+    background: var(--contact-background-gradient), url('assets/image/contact-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    color: var(--contact-light-color);
+    text-align: center;
+    padding: 100px 20px;
+    clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+  }
+  
+  .contact-hero-section h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    animation: contactFadeInDown 1s ease;
+  }
+  
+  .contact-hero-section p {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    animation: contactFadeInUp 1s ease;
+  }
+  
+  /* Contact Form Section */
+  .contact-form-section {
+    padding: 80px 20px;
+    background: var(--contact-light-color);
+  }
+  
+  .contact-form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .contact-form-group {
+    margin-bottom: 20px;
+  }
+  
+  .contact-form-group label {
+    display: block;
+    font-size: 1rem;
+    color: var(--contact-dark-color);
+    margin-bottom: 5px;
+  }
+  
+  .contact-form-group input,
+  .contact-form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--contact-secondary-color);
+    border-radius: 5px;
+    font-size: 1rem;
+    color: var(--contact-dark-color);
+  }
+  
+  .contact-form-group textarea {
+    resize: vertical;
+  }
+  
+  .contact-submit-btn {
+    background: var(--contact-primary-color);
+    color: var(--contact-light-color);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    font-weight: 500;
+    font-family: 'Montserrat', sans-serif;
+  }
+  
+  .contact-submit-btn:hover {
+    background: var(--contact-light-color);
+    color: var(--contact-primary-color);
+    border: 1px solid var(--contact-primary-color);
+  }
+  
+  /* Contact Info Section */
+  .contact-info-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 80px 20px 40px;
+    background: var(--contact-background-gradient);
+    color: var(--contact-light-color);
+    clip-path: polygon(0 10%, 100% 0, 100% 100%, 0 100%);
+  }
+  
+  .contact-info-card {
+    text-align: center;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .contact-info-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  }
+  
+  .contact-info-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    color: var(--contact-light-color);
+  }
+  
+  .contact-info-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .contact-info-card p {
+    font-size: 1rem;
+    color: var(--contact-light-color);
+  }
+  
+  /* Google Map Section */
+  .google-map-section {
+    padding: 80px 20px;
+    background: var(--contact-light-color);
+    text-align: center;
+  }
+  
+  .google-map-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: var(--contact-dark-color);
+    animation: contactFadeInDown 1s ease;
+  }
+  
+  .google-map-section iframe {
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: contactFadeInUp 1s ease;
+  }
+  
+  /* Animations */
+  @keyframes contactFadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes contactFadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .contact-hero-section h1 {
+      font-size: 2.5rem;
+    }
+  
+    .contact-hero-section p {
+      font-size: 1rem;
+    }
+  
+    .contact-form-section {
+      padding: 60px 15px;
+    }
+  
+    .contact-info-section {
+      padding: 100px 15px 50px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .contact-hero-section h1 {
+      font-size: 2rem;
+    }
+  
+    .contact-hero-section p {
+      font-size: 0.9rem;
+    }
+  
+    .contact-form-section {
+      padding: 40px 10px 20px;
+    }
+  }

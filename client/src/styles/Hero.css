@@ -1,0 +1,147 @@
+.hero {
+    display: flex;
+    width: 100%;
+    height: 70vh;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 2rem;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    color: var(--background-color);
+  }
+  
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../assets/image/hero.jpg') no-repeat center center/cover;
+    opacity: 0.3;
+    z-index: -2;
+  }
+  
+  .hero::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: -1;
+  }
+  
+  .hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--background-color);
+    animation: fadeInDown 1s ease;
+  }
+  
+  .hero-title > span {
+    color: var(--primary-color);
+  }
+  
+  .hero-text {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--light-color);
+    animation: fadeInUp 1s ease;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--background-color);
+    font-family: 'Montserrat', sans-serif;
+    animation: fadeInUp 1s ease;
+  }
+  
+  .btn {
+    text-decoration: none;
+  }
+  
+  .ctn-btn {
+    border: none;
+    background: var(--primary-color);
+    color: var(--background-color);
+    padding: 0.7rem 1rem;
+    border-radius: 25px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: fadeIn 1s ease;
+  }
+  
+  .ctn-btn:hover {
+    background: var(--background-color);
+    color: var(--primary-color);
+    transform: translateY(-5px);
+  }
+  
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .hero {
+      height: 60vh;
+      padding: 1.5rem;
+    }
+    .hero-title {
+      font-size: 2.5rem;
+    }
+    .hero-text {
+      font-size: 1.2rem;
+    }
+    .hero-subtitle {
+      font-size: 0.9rem;
+    }
+  }
+  
+  @media only screen and (max-width: 425px) {
+    .hero-title {
+      font-size: 2rem;
+    }
+    .hero-text {
+      font-size: 1rem;
+    }
+    .hero-subtitle {
+      font-size: 0.8rem;
+    }
+    .ctn-btn {
+      font-size: 1rem;
+    }
+  }
