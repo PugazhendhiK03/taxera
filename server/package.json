@@ -5,23 +5,19 @@
   "scripts": {
     "start": "node index.js",
     "install-client": "cd client && npm install",
-    "install-all": "npm install && npm run install-client",
-    "build": "cd client && npm run build",
+    "build-client": "cd client && npm run build",
     "dev": "nodemon index.js",
     "db:shell": "sqlite3 taxera.db",
     "db:backup": "cp taxera.db taxera.backup.db",
-    "prepare": "npm run install-all && npm run build",
-    "prod": "NODE_ENV=production node index.js",
-    "test": "jest",
-    "lint": "eslint ."
+    "install-all": "npm install && npm run install-client",
+    "prepare": "npm run install-client"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "better-sqlite3": "^9.6.0",
+    "better-sqlite3": "^9.4.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
@@ -31,9 +27,6 @@
     "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
-    "@types/express": "^4.17.21",
-    "@types/node": "^20.11.0",
-    "nodemon": "^3.1.9",
-    "typescript": "^5.3.3"
+    "nodemon": "^3.1.0"
   }
 }
