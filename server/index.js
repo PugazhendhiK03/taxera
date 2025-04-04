@@ -1,6 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-const Database = require('better-sqlite3'); // Changed from sqlite3 to better-sqlite3
+const Database = require('better-sqlite3');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
@@ -30,7 +30,7 @@ db.exec(`
   );
 `);
 
-// User functions (from code1)
+// User functions
 const User = {
   findOne: (email) => db.prepare('SELECT * FROM users WHERE email = ?').get(email),
   create: (userData) => {
@@ -50,7 +50,7 @@ const User = {
   getAll: () => db.prepare('SELECT id, name, email, role FROM users').all()
 };
 
-// Initialize admin account if none exists (from code1)
+// Initialize admin account if none exists
 function initializeAdminAccount() {
   const adminEmail = 'cs.taxera@gmail.com';
   const adminExists = User.findOne(adminEmail);
@@ -109,7 +109,7 @@ const apiLimiter = rateLimit({
 });
 
 // ======================
-// Authentication Middleware (updated to use better-sqlite3)
+// Authentication Middleware
 // ======================
 const protect = (roles = []) => {
   return (req, res, next) => {
@@ -139,10 +139,11 @@ const protect = (roles = []) => {
 };
 
 // ======================
-// API Routes (updated to use better-sqlite3)
+// API Routes
 // ======================
 app.use('/api/', apiLimiter);
 
+// Register Route
 app.post('/api/register', async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -176,6 +177,8 @@ app.post('/api/register', async (req, res) => {
     });
 
     res.status(201).json({ 
+      success: true,
+      redirectTo: '/dashboard',
       user: { 
         id: user.id, 
         name: user.name, 
@@ -189,6 +192,7 @@ app.post('/api/register', async (req, res) => {
   }
 });
 
+// Login Route
 app.post('/api/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -217,6 +221,8 @@ app.post('/api/login', async (req, res) => {
     });
 
     res.json({ 
+      success: true,
+      redirectTo: user.role === 'admin' ? '/admin/dashboard' : '/dashboard',
       user: { 
         id: user.id, 
         name: user.name, 
@@ -230,6 +236,25 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
+// Dashboard Route
+app.get('/api/dashboard', protect(), (req, res) => {
+  try {
+    // Here you can add any dashboard-specific data you want to return
+    res.json({
+      success: true,
+      user: req.user,
+      dashboardData: {
+        // Add any dashboard data here
+        welcomeMessage: `Welcome to your dashboard, ${req.user.name}!`,
+        lastLogin: new Date().toISOString()
+      }
+    });
+  } catch (error) {
+    console.error('Dashboard error:', error);
+    res.status(500).json({ message: 'Failed to load dashboard' });
+  }
+});
+
 // ======================
 // Other Routes
 // ======================
@@ -239,7 +264,7 @@ app.get('/api/user', protect(), (req, res) => {
 
 app.post('/api/logout', (req, res) => {
   res.clearCookie('token');
-  res.json({ message: 'Logged out successfully' });
+  res.json({ success: true, redirectTo: '/login' });
 });
 
 app.get('/api/admin/users', protect(['admin']), (req, res) => {
