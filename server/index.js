@@ -1,6 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-const sqlite3 = require('sqlite3').verbose();
+const Database = require('better-sqlite3'); // Changed from sqlite3 to better-sqlite3
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
@@ -14,45 +14,58 @@ const app = express();
 // ======================
 // Database Setup (SQLite)
 // ======================
-const db = new sqlite3.Database('./taxera.db', (err) => {
-  if (err) {
-    console.error('Database connection error:', err.message);
-    process.exit(1);
-  }
-  console.log('Connected to SQLite database');
-  
-  // Create users table and add admin account
-  db.serialize(() => {
-    db.run(`CREATE TABLE IF NOT EXISTS users (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL,
-      email TEXT UNIQUE NOT NULL,
-      password TEXT NOT NULL,
-      role TEXT NOT NULL DEFAULT 'user',
-      createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
-    )`);
+const dbPath = process.env.SQLITE_DB || path.join(__dirname, 'taxera.db');
+const db = new Database(dbPath);
 
-    // Add admin account if it doesn't exist
-    const adminEmail = 'cs.taxera@gmail.com';
-    db.get(`SELECT id FROM users WHERE email = ?`, [adminEmail], (err, row) => {
-      if (!row) {
-        const adminName = 'Mani Murugan';
-        const adminPassword = 'ManiMuruganAdmin';
-        const hashedPassword = bcrypt.hashSync(adminPassword, 12);
-        
-        db.run(`INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)`, 
-          [adminName, adminEmail, hashedPassword, 'admin'], 
-          (err) => {
-            if (err) {
-              console.error('Error creating admin account:', err);
-            } else {
-              console.log('Admin account created successfully');
-            }
-          });
-      }
+// Initialize database with users table
+db.pragma('journal_mode = WAL');
+db.exec(`
+  CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    password TEXT NOT NULL,
+    role TEXT CHECK(role IN ('user', 'admin')) NOT NULL DEFAULT 'user',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  );
+`);
+
+// User functions (from code1)
+const User = {
+  findOne: (email) => db.prepare('SELECT * FROM users WHERE email = ?').get(email),
+  create: (userData) => {
+    const stmt = db.prepare(
+      'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)'
+    );
+    const info = stmt.run(
+      userData.name,
+      userData.email,
+      userData.password,
+      userData.role || 'user'
+    );
+    return { id: info.lastInsertRowid, ...userData };
+  },
+  findById: (id) => db.prepare('SELECT id, name, email, role FROM users WHERE id = ?').get(id),
+  count: () => db.prepare('SELECT COUNT(*) as count FROM users').get().count,
+  getAll: () => db.prepare('SELECT id, name, email, role FROM users').all()
+};
+
+// Initialize admin account if none exists (from code1)
+function initializeAdminAccount() {
+  const adminEmail = 'cs.taxera@gmail.com';
+  const adminExists = User.findOne(adminEmail);
+  
+  if (!adminExists) {
+    const hashedPassword = bcrypt.hashSync('ManiMuruganAdmin', 10);
+    User.create({
+      name: 'Mani Murugan',
+      email: adminEmail,
+      password: hashedPassword,
+      role: 'admin'
     });
-  });
-});
+    console.log('Initial admin account created');
+  }
+}
 
 // ======================
 // Environment Validation
@@ -96,7 +109,7 @@ const apiLimiter = rateLimit({
 });
 
 // ======================
-// Authentication Middleware
+// Authentication Middleware (updated to use better-sqlite3)
 // ======================
 const protect = (roles = []) => {
   return (req, res, next) => {
@@ -105,87 +118,88 @@ const protect = (roles = []) => {
       return res.status(401).json({ message: 'Not authorized' });
     }
 
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-      if (err) {
-        return res.status(401).json({ message: 'Invalid token' });
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const user = User.findById(decoded.userId);
+      
+      if (!user) {
+        return res.status(401).json({ message: 'User not found' });
       }
 
-      db.get(`SELECT * FROM users WHERE id = ?`, [decoded.userId], (err, user) => {
-        if (err || !user) {
-          return res.status(401).json({ message: 'User not found' });
-        }
+      if (roles.length && !roles.includes(user.role)) {
+        return res.status(403).json({ message: 'Insufficient permissions' });
+      }
 
-        if (roles.length && !roles.includes(user.role)) {
-          return res.status(403).json({ message: 'Insufficient permissions' });
-        }
-
-        req.user = user;
-        next();
-      });
-    });
+      req.user = user;
+      next();
+    } catch (err) {
+      return res.status(401).json({ message: 'Invalid token' });
+    }
   };
 };
 
 // ======================
-// API Routes
+// API Routes (updated to use better-sqlite3)
 // ======================
 app.use('/api/', apiLimiter);
 
-app.post('/api/register', (req, res) => {
-  const { name, email, password } = req.body;
-  
-  if (!name || !email || !password) {
-    return res.status(400).json({ message: 'All fields are required' });
-  }
+app.post('/api/register', async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
 
-  db.get(`SELECT id FROM users WHERE email = ?`, [email], (err, row) => {
-    if (row) {
+    if (User.findOne(email)) {
       return res.status(409).json({ message: 'Email already in use' });
     }
 
-    const hashedPassword = bcrypt.hashSync(password, 12);
-    db.run(`INSERT INTO users (name, email, password) VALUES (?, ?, ?)`, 
-      [name, email, hashedPassword], 
-      function(err) {
-        if (err) {
-          console.error('Registration error:', err);
-          return res.status(500).json({ message: 'Registration failed' });
-        }
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const user = User.create({
+      name,
+      email,
+      password: hashedPassword
+    });
 
-        const token = jwt.sign(
-          { userId: this.lastID, role: 'user' },
-          process.env.JWT_SECRET,
-          { expiresIn: process.env.JWT_EXPIRES_IN || '1h' }
-        );
+    const token = jwt.sign(
+      { userId: user.id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRES_IN || '1h' }
+    );
 
-        res.cookie('token', token, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'strict',
-          maxAge: parseInt(process.env.COOKIE_EXPIRES_IN || '3600000')
-        });
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: parseInt(process.env.COOKIE_EXPIRES_IN || '3600000')
+    });
 
-        res.status(201).json({ 
-          user: { 
-            id: this.lastID, 
-            name, 
-            email, 
-            role: 'user' 
-          } 
-        });
-      });
-  });
+    res.status(201).json({ 
+      user: { 
+        id: user.id, 
+        name: user.name, 
+        email: user.email, 
+        role: user.role 
+      } 
+    });
+  } catch (error) {
+    console.error('Registration error:', error);
+    res.status(500).json({ message: 'Registration failed' });
+  }
 });
 
-app.post('/api/login', (req, res) => {
-  const { email, password } = req.body;
-  
-  db.get(`SELECT * FROM users WHERE email = ?`, [email], (err, user) => {
-    if (err || !user) {
+app.post('/api/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = User.findOne(email);
+    
+    if (!user) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    if (!bcrypt.compareSync(password, user.password)) {
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
@@ -210,7 +224,10 @@ app.post('/api/login', (req, res) => {
         role: user.role 
       } 
     });
-  });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ message: 'Login failed' });
+  }
 });
 
 // ======================
@@ -225,8 +242,13 @@ app.post('/api/logout', (req, res) => {
   res.json({ message: 'Logged out successfully' });
 });
 
-app.get('/api/admin', protect(['admin']), (req, res) => {
-  res.json({ message: 'Admin access granted' });
+app.get('/api/admin/users', protect(['admin']), (req, res) => {
+  try {
+    const users = User.getAll();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
 });
 
 // ======================
@@ -268,4 +290,5 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  initializeAdminAccount();
 });
