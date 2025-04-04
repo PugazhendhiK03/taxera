@@ -8,7 +8,8 @@
     "build": "cd client && npm run build",
     "dev": "nodemon index.js",
     "db:shell": "sqlite3 taxera.db",
-    "db:backup": "cp taxera.db taxera.backup.db"
+    "db:backup": "cp taxera.db taxera.backup.db",
+    "preinstall": "npm_config_build_from_source=true npm install better-sqlite3"
   },
   "keywords": [],
   "author": "",
@@ -16,7 +17,7 @@
   "description": "",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "better-sqlite3": "^9.4.3",
+    "sqlite3": "^5.1.7",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
