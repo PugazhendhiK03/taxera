@@ -14,7 +14,7 @@ const app = express();
 // ======================
 // Environment Validation
 // ======================
-const requiredEnvVars = ['MONGODB_URI', 'JWT_SECRET', 'PORT'];
+const requiredEnvVars = ['MONGODB_URI', 'JWT_SECRET', 'PORT', 'ALLOWED_ORIGINS', 'RATE_LIMIT_WINDOW_MS', 'RATE_LIMIT_MAX', 'JWT_EXPIRES_IN', 'COOKIE_EXPIRES_IN'];
 requiredEnvVars.forEach(env => {
   if (!process.env[env]) {
     console.error(`Missing required environment variable: ${env}`);
@@ -32,22 +32,10 @@ app.use(cookieParser());
 // Trust Render's proxy
 app.set('trust proxy', 1);
 
-// Rate limiting
-const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: 'Too many requests, please try again later'
-});
-
 // ======================
 // CORS Configuration
 // ======================
-const allowedOrigins = [
-  'https://taxera.onrender.com',
-  'http://localhost:5173'
-];
+const allowedOrigins = process.env.ALLOWED_ORIGINS.split(',');
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -61,10 +49,21 @@ app.use(cors({
 }));
 
 // ======================
+// Rate Limiting
+// ======================
+const apiLimiter = rateLimit({
+  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS),
+  max: parseInt(process.env.RATE_LIMIT_MAX),
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: 'Too many requests, please try again later'
+});
+
+// ======================
 // Database Connection
 // ======================
 const DB = process.env.MONGODB_URI.replace(
-  '<PASSWORD>',
+  'pugazhendhi0308',
   encodeURIComponent(process.env.MONGODB_PASSWORD)
 );
 
@@ -201,14 +200,14 @@ app.post('/api/register', async (req, res) => {
     const token = jwt.sign(
       { userId: user._id, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: '1h' }
+      { expiresIn: process.env.JWT_EXPIRES_IN }
     );
     
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 3600000
+      maxAge: parseInt(process.env.COOKIE_EXPIRES_IN)
     });
     
     res.status(201).json({ 
@@ -242,14 +241,14 @@ app.post('/api/login', async (req, res) => {
     const token = jwt.sign(
       { userId: user._id, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: '1h' }
+      { expiresIn: process.env.JWT_EXPIRES_IN }
     );
     
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 3600000
+      maxAge: parseInt(process.env.COOKIE_EXPIRES_IN)
     });
     
     res.json({ 
