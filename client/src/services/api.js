@@ -1,7 +1,7 @@
 // src/services/api.js
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 
   (import.meta.env.MODE === 'production' 
-    ? 'https://taxera.onrender.com' 
+    ? 'https://taxera-server.onrender.com' 
     : 'http://localhost:10000');
 
 export const apiClient = axios.create({

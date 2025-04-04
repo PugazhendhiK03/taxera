@@ -1,6 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose');
+const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
@@ -12,9 +12,52 @@ const path = require('path');
 const app = express();
 
 // ======================
+// Database Setup (SQLite)
+// ======================
+const db = new sqlite3.Database('./taxera.db', (err) => {
+  if (err) {
+    console.error('Database connection error:', err.message);
+    process.exit(1);
+  }
+  console.log('Connected to SQLite database');
+  
+  // Create users table and add admin account
+  db.serialize(() => {
+    db.run(`CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      email TEXT UNIQUE NOT NULL,
+      password TEXT NOT NULL,
+      role TEXT NOT NULL DEFAULT 'user',
+      createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+    )`);
+
+    // Add admin account if it doesn't exist
+    const adminEmail = 'cs.taxera@gmail.com';
+    db.get(`SELECT id FROM users WHERE email = ?`, [adminEmail], (err, row) => {
+      if (!row) {
+        const adminName = 'Mani Murugan';
+        const adminPassword = 'ManiMuruganAdmin';
+        const hashedPassword = bcrypt.hashSync(adminPassword, 12);
+        
+        db.run(`INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)`, 
+          [adminName, adminEmail, hashedPassword, 'admin'], 
+          (err) => {
+            if (err) {
+              console.error('Error creating admin account:', err);
+            } else {
+              console.log('Admin account created successfully');
+            }
+          });
+      }
+    });
+  });
+});
+
+// ======================
 // Environment Validation
 // ======================
-const requiredEnvVars = ['MONGODB_URI', 'JWT_SECRET', 'PORT', 'ALLOWED_ORIGINS', 'RATE_LIMIT_WINDOW_MS', 'RATE_LIMIT_MAX', 'JWT_EXPIRES_IN', 'COOKIE_EXPIRES_IN'];
+const requiredEnvVars = ['JWT_SECRET', 'PORT', 'ALLOWED_ORIGINS'];
 requiredEnvVars.forEach(env => {
   if (!process.env[env]) {
     console.error(`Missing required environment variable: ${env}`);
@@ -23,20 +66,15 @@ requiredEnvVars.forEach(env => {
 });
 
 // ======================
-// Enhanced Security
+// Middleware Setup
 // ======================
 app.use(helmet());
 app.use(express.json({ limit: '10kb' }));
 app.use(cookieParser());
-
-// Trust Render's proxy
 app.set('trust proxy', 1);
 
-// ======================
 // CORS Configuration
-// ======================
 const allowedOrigins = process.env.ALLOWED_ORIGINS.split(',');
-
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -48,224 +86,137 @@ app.use(cors({
   credentials: true
 }));
 
-// ======================
 // Rate Limiting
-// ======================
 const apiLimiter = rateLimit({
-  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS),
-  max: parseInt(process.env.RATE_LIMIT_MAX),
+  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '900000'),
+  max: parseInt(process.env.RATE_LIMIT_MAX || '100'),
   standardHeaders: true,
   legacyHeaders: false,
   message: 'Too many requests, please try again later'
 });
 
 // ======================
-// Database Connection
-// ======================
-const DB = process.env.MONGODB_URI.replace(
-  'pugazhendhi0308',
-  encodeURIComponent(process.env.MONGODB_PASSWORD)
-);
-
-let retries = 0;
-const MAX_RETRIES = 3;
-
-const connectWithRetry = () => {
-  mongoose.connect(DB, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 5000,
-    socketTimeoutMS: 30000,
-    maxPoolSize: 50,
-    retryWrites: true,
-    w: 'majority'
-  })
-  .then(() => console.log('MongoDB connected successfully'))
-  .catch(err => {
-    console.error(`MongoDB connection error (attempt ${retries + 1}/${MAX_RETRIES}):`, err.message);
-    if (retries < MAX_RETRIES) {
-      retries++;
-      setTimeout(connectWithRetry, 5000);
-    } else {
-      console.error('Max retries reached. Exiting...');
-      process.exit(1);
-    }
-  });
-};
-
-connectWithRetry();
-
-// ======================
-// User Model
-// ======================
-const UserSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { 
-    type: String, 
-    required: true, 
-    unique: true,
-    validate: {
-      validator: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
-      message: 'Invalid email format'
-    }
-  },
-  password: { 
-    type: String, 
-    required: true,
-    minlength: 8
-  },
-  role: { 
-    type: String, 
-    enum: ['user', 'admin'], 
-    default: 'user' 
-  },
-  createdAt: { 
-    type: Date, 
-    default: Date.now 
-  }
-});
-
-UserSchema.index({ email: 1 });
-
-const User = mongoose.model('User', UserSchema);
-
-// ======================
-// Middleware
+// Authentication Middleware
 // ======================
 const protect = (roles = []) => {
-  return async (req, res, next) => {
-    try {
-      const token = req.cookies.token;
-      if (!token) throw new Error('Not authorized');
+  return (req, res, next) => {
+    const token = req.cookies.token;
+    if (!token) {
+      return res.status(401).json({ message: 'Not authorized' });
+    }
 
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      const user = await User.findById(decoded.userId);
-
-      if (!user) throw new Error('User not found');
-      if (roles.length && !roles.includes(user.role)) {
-        throw new Error('Insufficient permissions');
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err) {
+        return res.status(401).json({ message: 'Invalid token' });
       }
 
-      req.user = user;
-      next();
-    } catch (err) {
-      res.status(401).json({ message: err.message });
-    }
+      db.get(`SELECT * FROM users WHERE id = ?`, [decoded.userId], (err, user) => {
+        if (err || !user) {
+          return res.status(401).json({ message: 'User not found' });
+        }
+
+        if (roles.length && !roles.includes(user.role)) {
+          return res.status(403).json({ message: 'Insufficient permissions' });
+        }
+
+        req.user = user;
+        next();
+      });
+    });
   };
 };
-
-// ======================
-// Production Setup
-// ======================
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'client', 'dist')));
-  
-  // Health check endpoint
-  app.get('/health', (req, res) => {
-    const status = {
-      status: 'UP',
-      timestamp: new Date(),
-      dbState: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
-      memoryUsage: process.memoryUsage()
-    };
-    res.status(200).json(status);
-  });
-}
 
 // ======================
 // API Routes
 // ======================
 app.use('/api/', apiLimiter);
 
-app.post('/api/register', async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
-    
-    if (!name || !email || !password) {
-      return res.status(400).json({ message: 'All fields are required' });
-    }
+app.post('/api/register', (req, res) => {
+  const { name, email, password } = req.body;
+  
+  if (!name || !email || !password) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
+  db.get(`SELECT id FROM users WHERE email = ?`, [email], (err, row) => {
+    if (row) {
       return res.status(409).json({ message: 'Email already in use' });
     }
-    
-    const hashedPassword = await bcrypt.hash(password, 12);
-    const usersCount = await User.countDocuments();
-    const role = usersCount === 0 ? 'admin' : 'user';
-    
-    const user = new User({ name, email, password: hashedPassword, role });
-    await user.save();
-    
-    const token = jwt.sign(
-      { userId: user._id, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN }
-    );
-    
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: parseInt(process.env.COOKIE_EXPIRES_IN)
-    });
-    
-    res.status(201).json({ 
-      user: { 
-        id: user._id, 
-        name: user.name, 
-        email: user.email, 
-        role: user.role 
-      } 
-    });
-  } catch (error) {
-    console.error('Registration error:', error);
-    res.status(500).json({ message: 'Registration failed' });
-  }
+
+    const hashedPassword = bcrypt.hashSync(password, 12);
+    db.run(`INSERT INTO users (name, email, password) VALUES (?, ?, ?)`, 
+      [name, email, hashedPassword], 
+      function(err) {
+        if (err) {
+          console.error('Registration error:', err);
+          return res.status(500).json({ message: 'Registration failed' });
+        }
+
+        const token = jwt.sign(
+          { userId: this.lastID, role: 'user' },
+          process.env.JWT_SECRET,
+          { expiresIn: process.env.JWT_EXPIRES_IN || '1h' }
+        );
+
+        res.cookie('token', token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'strict',
+          maxAge: parseInt(process.env.COOKIE_EXPIRES_IN || '3600000')
+        });
+
+        res.status(201).json({ 
+          user: { 
+            id: this.lastID, 
+            name, 
+            email, 
+            role: 'user' 
+          } 
+        });
+      });
+  });
 });
 
-app.post('/api/login', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    
-    const user = await User.findOne({ email });
-    if (!user) {
+app.post('/api/login', (req, res) => {
+  const { email, password } = req.body;
+  
+  db.get(`SELECT * FROM users WHERE email = ?`, [email], (err, user) => {
+    if (err || !user) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
-    
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
+
+    if (!bcrypt.compareSync(password, user.password)) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
-    
+
     const token = jwt.sign(
-      { userId: user._id, role: user.role },
+      { userId: user.id, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN }
+      { expiresIn: process.env.JWT_EXPIRES_IN || '1h' }
     );
-    
+
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: parseInt(process.env.COOKIE_EXPIRES_IN)
+      maxAge: parseInt(process.env.COOKIE_EXPIRES_IN || '3600000')
     });
-    
+
     res.json({ 
       user: { 
-        id: user._id, 
+        id: user.id, 
         name: user.name, 
         email: user.email, 
         role: user.role 
       } 
     });
-  } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ message: 'Login failed' });
-  }
+  });
 });
 
-app.get('/api/user', protect(), async (req, res) => {
+// ======================
+// Other Routes
+// ======================
+app.get('/api/user', protect(), (req, res) => {
   res.json(req.user);
 });
 
@@ -279,8 +230,20 @@ app.get('/api/admin', protect(['admin']), (req, res) => {
 });
 
 // ======================
-// Client Routing
+// Production Setup
 // ======================
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'client', 'dist')));
+  
+  app.get('/health', (req, res) => {
+    res.status(200).json({ 
+      status: 'UP',
+      timestamp: new Date() 
+    });
+  });
+}
+
+// Client Routing
 app.get('*', (req, res) => {
   if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
@@ -289,9 +252,7 @@ app.get('*', (req, res) => {
   }
 });
 
-// ======================
 // Error Handling
-// ======================
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ 
@@ -305,17 +266,6 @@ app.use((err, req, res, next) => {
 // Server Start
 // ======================
 const PORT = process.env.PORT || 10000;
-const server = app.listen(PORT, () => {
-  console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
-});
-
-// Graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('SIGTERM received. Shutting down gracefully...');
-  server.close(() => {
-    mongoose.connection.close(false, () => {
-      console.log('MongoDB connection closed');
-      process.exit(0);
-    });
-  });
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
