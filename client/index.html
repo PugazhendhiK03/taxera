@@ -1,15 +1,84 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <!-- <link rel="icon" type="image/svg+xml" href="/client/src/assets/image/logo.png" /> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tax Era</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta name="description" content="Tax Era - Professional Tax Consultancy Services for GST, Income Tax, and Business Compliance">
+    
+    <!-- Primary Meta Tags -->
+    <title>Tax Era | Expert Tax Consultancy Services</title>
+    <meta name="title" content="Tax Era | Expert Tax Consultancy Services">
+    <meta name="keywords" content="GST, Income Tax, Tax Consultancy, Business Compliance, Accounting Services">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://taxera.onrender.com/">
+    <meta property="og:title" content="Tax Era | Expert Tax Consultancy Services">
+    <meta property="og:description" content="Professional Tax Consultancy Services for GST, Income Tax, and Business Compliance">
+    <meta property="og:image" content="https://taxera.onrender.com/assets/taxera-social-preview.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://taxera.onrender.com/">
+    <meta property="twitter:title" content="Tax Era | Expert Tax Consultancy Services">
+    <meta property="twitter:description" content="Professional Tax Consultancy Services for GST, Income Tax, and Business Compliance">
+    <meta property="twitter:image" content="https://taxera.onrender.com/assets/taxera-social-preview.jpg">
+
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="manifest" href="/assets/site.webmanifest">
+    
+    <!-- Font Awesome (Single CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" 
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" 
+          crossorigin="anonymous" 
+          referrerpolicy="no-referrer" />
+    
+    <!-- Preconnect to important origins -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://taxera.onrender.com">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/src/main.jsx" as="script">
+    <link rel="preload" href="/assets/main.css" as="style">
   </head>
   <body>
+    <noscript>
+      <div class="noscript-warning">
+        <h1>JavaScript is disabled</h1>
+        <p>Tax Era requires JavaScript to function properly. Please enable JavaScript in your browser settings.</p>
+      </div>
+    </noscript>
+    
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- Async script loading -->
+    <script type="module" src="/src/main.jsx" async></script>
+    
+    <!-- Asset path helper -->
+    <script>
+      window.__assetsPath = (filename) => {
+        const basePath = '/assets/';
+        // Cache busting for production
+        const cacheBuster = window.__BUILD_HASH__ ? `?v=${window.__BUILD_HASH__}` : '';
+        return basePath + filename + cacheBuster;
+      };
+      
+      // Set build hash in production
+      window.__BUILD_HASH__ = '<%= BUILD_HASH %>';
+    </script>
+    
+    <!-- Google Analytics (example) -->
+    <script>
+      if (window.location.hostname === 'taxera.onrender.com') {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+      }
+    </script>
   </body>
 </html>

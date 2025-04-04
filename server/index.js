@@ -5,76 +5,148 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const path = require('path');
 
 const app = express();
 
-// Middleware
+// ======================
+// Enhanced Security
+// ======================
+app.use(helmet());
+app.use(rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // limit each IP to 100 requests
+}));
+
+// ======================
+// CORS Configuration
+// ======================
+const allowedOrigins = [
+  'https://taxera.onrender.com',
+  'http://localhost:5173'
+];
+
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
-app.use(express.json());
-app.use(cookieParser());
 
-// Database connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/mern-auth')
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log(err));
+// ======================
+// Database Connection
+// ======================
+mongoose.connect(process.env.MONGODB_URI, {
+  serverSelectionTimeoutMS: 5000,
+  socketTimeoutMS: 30000,
+  maxPoolSize: 50
+})
+.then(() => console.log('MongoDB connected'))
+.catch(err => {
+  console.error('MongoDB connection error:', err);
+  process.exit(1);
+});
 
-// User Model
+// ======================
+// User Model (Enhanced)
+// ======================
 const UserSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  role: { type: String, enum: ['user', 'admin'], default: 'user' }
+  email: { 
+    type: String, 
+    required: true, 
+    unique: true,
+    validate: {
+      validator: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
+      message: 'Invalid email format'
+    }
+  },
+  password: { 
+    type: String, 
+    required: true,
+    minlength: 8
+  },
+  role: { 
+    type: String, 
+    enum: ['user', 'admin'], 
+    default: 'user' 
+  },
+  createdAt: { 
+    type: Date, 
+    default: Date.now 
+  }
 });
+
+// Index for faster queries
+UserSchema.index({ email: 1 });
 
 const User = mongoose.model('User', UserSchema);
 
-// Routes
+// ======================
+// Production Middleware
+// ======================
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'client', 'dist')));
+  
+  // Health check endpoint for Render
+  app.get('/health', (req, res) => {
+    res.status(200).send('OK');
+  });
+}
+
+// ======================
+// Enhanced Auth Routes
+// ======================
 app.post('/api/register', async (req, res) => {
   try {
     const { name, email, password } = req.body;
     
-    // Check if user exists
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
+
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: 'User already exists' });
+      return res.status(409).json({ message: 'Email already in use' });
     }
     
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
-    
-    // Create user (first user is admin, others are regular users)
+    const hashedPassword = await bcrypt.hash(password, 12);
     const usersCount = await User.countDocuments();
     const role = usersCount === 0 ? 'admin' : 'user';
     
-    const user = new User({
-      name,
-      email,
-      password: hashedPassword,
-      role
-    });
-    
+    const user = new User({ name, email, password: hashedPassword, role });
     await user.save();
     
-    // Generate token
     const token = jwt.sign(
       { userId: user._id, role: user.role },
-      process.env.JWT_SECRET || 'your-secret-key',
+      process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
     
-    // Set cookie
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 3600000 // 1 hour
+      sameSite: 'strict',
+      maxAge: 3600000
     });
     
-    res.status(201).json({ message: 'User registered successfully', user: { id: user._id, name: user.name, email: user.email, role: user.role } });
+    res.status(201).json({ 
+      user: { 
+        id: user._id, 
+        name: user.name, 
+        email: user.email, 
+        role: user.role 
+      } 
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    console.error('Registration error:', error);
+    res.status(500).json({ message: 'Registration failed' });
   }
 });
 
@@ -82,63 +154,58 @@ app.post('/api/login', async (req, res) => {
   try {
     const { email, password } = req.body;
     
-    // Find user
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: 'Invalid credentials' });
     }
     
-    // Check password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: 'Invalid credentials' });
     }
     
-    // Generate token
     const token = jwt.sign(
       { userId: user._id, role: user.role },
-      process.env.JWT_SECRET || 'your-secret-key',
+      process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
     
-    // Set cookie
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 3600000 // 1 hour
+      sameSite: 'strict',
+      maxAge: 3600000
     });
     
-    res.json({ message: 'Login successful', user: { id: user._id, name: user.name, email: user.email, role: user.role } });
+    res.json({ 
+      user: { 
+        id: user._id, 
+        name: user.name, 
+        email: user.email, 
+        role: user.role 
+      } 
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    console.error('Login error:', error);
+    res.status(500).json({ message: 'Login failed' });
   }
 });
 
-app.get('/api/user', async (req, res) => {
-  try {
-    const token = req.cookies.token;
-    
-    if (!token) {
-      return res.status(401).json({ message: 'Not authenticated' });
-    }
-    
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
-    const user = await User.findById(decoded.userId).select('-password');
-    
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    
-    res.json(user);
-  } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+// ======================
+// Additional Routes
+// ======================
+app.get('*', (req, res) => {
+  if (process.env.NODE_ENV === 'production') {
+    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+  } else {
+    res.status(404).json({ message: 'Route not found' });
   }
 });
 
-app.post('/api/logout', (req, res) => {
-  res.clearCookie('token');
-  res.json({ message: 'Logged out successfully' });
+// ======================
+// Server Start
+// ======================
+const PORT = process.env.PORT || 10000; // Render uses 10000
+app.listen(PORT, () => {
+  console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
 });
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
